@@ -7,6 +7,7 @@ namespace Project2015To2017.Definition
 		public string Id { get; set; }
 		public string Version { get; set; }
 		public bool IsDevelopmentDependency { get; set; }
+		public bool GeneratePathProperty { get; set; }
 
 		public XElement DefinitionElement { get; set; }
 	}

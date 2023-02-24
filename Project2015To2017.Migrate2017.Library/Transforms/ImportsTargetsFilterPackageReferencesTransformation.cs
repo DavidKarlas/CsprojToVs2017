@@ -34,7 +34,7 @@ namespace Project2015To2017.Migrate2017.Transforms
 		private static List<XElement> FilteredImports(IReadOnlyList<XElement> imports, string[] packagePaths, string projectPath)
 		{
 			var filteredImports = imports
-									.Where(import => !packagePaths.Any(
+									.Where(import => import.Attribute("Project").Value != "$(EnvironmentConfig)" && !packagePaths.Any(
 											packagePath => ImportMatchesPackage(import, packagePath)
 										)
 									).ToList();

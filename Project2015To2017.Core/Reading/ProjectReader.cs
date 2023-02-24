@@ -188,7 +188,8 @@ namespace Project2015To2017.Reading
 							Version = x.Attribute("Version")?.Value ??
 									  x.Element(project.XmlNamespace + "Version")?.Value,
 							IsDevelopmentDependency = x.Element(project.XmlNamespace + "PrivateAssets") != null,
-							DefinitionElement = x
+							DefinitionElement = x,
+							GeneratePathProperty = x.Attribute("GeneratePathProperty")?.Value == "true"
 						};
 					})
 					.Where(x => x != null);
@@ -232,7 +233,8 @@ namespace Project2015To2017.Reading
 				{
 					Id = x.Attribute("id").Value,
 					Version = x.Attribute("version").Value,
-					IsDevelopmentDependency = x.Attribute("developmentDependency")?.Value == "true"
+					IsDevelopmentDependency = x.Attribute("developmentDependency")?.Value == "true",
+					GeneratePathProperty = x.Attribute("GeneratePathProperty")?.Value == "true"
 				});
 
 			return packageConfigPackages;

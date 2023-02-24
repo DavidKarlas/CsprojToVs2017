@@ -45,7 +45,7 @@ namespace Project2015To2017.Transforms
 			}
 
 			//Add to the primary property group, which then gives scope for other generic transforms to process it
-			definition.PrimaryPropertyGroup().Add(definition.AssemblyAttributeProperties);
+			//definition.PrimaryPropertyGroup().Add(definition.AssemblyAttributeProperties);
 
 			MarkForDeletion(definition);
 		}

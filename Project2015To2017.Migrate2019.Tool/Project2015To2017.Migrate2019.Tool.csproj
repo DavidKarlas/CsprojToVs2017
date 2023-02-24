@@ -9,6 +9,7 @@
 	<PackageId>Project2015To2017.Migrate2019.Tool</PackageId>
 	<Product>Project2015To2017.Migrate2019.Tool</Product>
 	<OutputType>Exe</OutputType>
+	<TargetFrameworks>net6.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>

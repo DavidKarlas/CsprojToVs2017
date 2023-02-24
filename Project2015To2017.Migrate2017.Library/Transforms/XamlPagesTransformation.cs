@@ -13,130 +13,52 @@ namespace Project2015To2017.Migrate2017.Transforms
 	{
 		public XamlPagesTransformation(ILogger logger = null)
 		{
-			this.logger = logger ?? NoopLogger.Instance;
 		}
 
 		/// <inheritdoc />
 		public void Transform(Project definition)
 		{
-			if (!definition.IsWindowsPresentationFoundationProject())
+			if (definition.FilePath.Name == "Data.csproj")
 			{
-				return;
+				SwitchToGlob(definition, "EmbeddedResource", "Resources");
 			}
 
-			var removeQueue = definition.ItemGroups
-				.SelectMany(x => x.Elements())
-				.Where(x => XamlPageFilter(x, definition))
-				.ToImmutableArray();
-
-			var count = 0u;
-
-			foreach (var x in removeQueue)
+			if (definition.FilePath.Name == "OMDP.MapsDataPipeline.Utils.Tests.csproj")
 			{
-				x.Remove();
-				count++;
+				SwitchToGlob(definition, "Content", "ResourceFiles");
 			}
 
-			if (count == 0)
+
+			if (definition.FilePath.Name == "OMDP.MapsDataPipeline.Data.Enrichment.Tests.csproj")
 			{
-				return;
+				SwitchToGlob(definition, "None", "Resources");
 			}
 
-			logger.LogDebug($"Removed {count} XAML items thanks to MSBuild.Sdk.Extras defaults");
+
+
+			if (definition.FilePath.Name == "DVT.Common.csproj")
+			{
+				SwitchToGlob(definition, "Content", "TestConfig");
+			}
+			if (definition.FilePath.Name == "OMDP.MapsDataPipeline.FMU.FastMapUpdate.Tests.csproj")
+			{
+				SwitchToGlob(definition, "None", "TestSamples");
+			}
 		}
 
-		private static readonly string[] FilteredTags = { "Page", "ApplicationDefinition", "Compile", "None" };
-		private readonly ILogger logger;
-
-		private static bool XamlPageFilter(XElement x, Project definition)
+		private static void SwitchToGlob(Project definition, string itemType, string path)
 		{
-			var tagLocalName = x.Name.LocalName;
-			if (!FilteredTags.Contains(tagLocalName))
-			{
-				return false;
-			}
+			definition.ItemGroups
+		   .SelectMany(x => x.Elements())
+		   .Where(x => x.Name.LocalName == itemType)
+		   .Remove();
 
-			var include = x.Attribute("Include")?.Value;
-			var update = x.Attribute("Update")?.Value;
-			var link = include ?? update;
-
-			if (link == null)
-			{
-				return false;
-			}
-
-			var projectFolder = definition.ProjectFolder.FullName;
-			var inProject = Path.GetFullPath(Path.Combine(projectFolder, link)).StartsWith(projectFolder);
-			if (!inProject)
-			{
-				return false;
-			}
-
-			var fileName = Path.GetFileName(link);
-
-			if (tagLocalName == "Compile")
-			{
-				if (fileName.EndsWith(".Designer.cs", StringComparison.OrdinalIgnoreCase))
-				{
-					var autoGen = x.Element("AutoGen")?.Value ?? "true";
-					if (!string.Equals(autoGen, "true", StringComparison.OrdinalIgnoreCase))
-					{
-						return false;
-					}
-
-					var designTime = x.Element("DesignTime")?.Value ?? "true";
-					if (!string.Equals(designTime, "true", StringComparison.OrdinalIgnoreCase))
-					{
-						return false;
-					}
-
-					var designTimeSharedInput = x.Element("DesignTimeSharedInput")?.Value ?? "true";
-					if (!string.Equals(designTimeSharedInput, "true", StringComparison.OrdinalIgnoreCase))
-					{
-						return false;
-					}
-
-					return true;
-				}
-
-				return link.EndsWith(".xaml.cs", StringComparison.OrdinalIgnoreCase)
-					   && x.Descendants().All(VerifyDefaultXamlCompileItem);
-			}
-
-			if (update != null)
-			{
-				return false;
-			}
-
-			// from now on (include != null) is invariant
-
-			if (tagLocalName == "None" && fileName.EndsWith(".settings", StringComparison.OrdinalIgnoreCase))
-			{
-				var generator = x.Element("Generator")?.Value ?? "SettingsSingleFileGenerator";
-				var lastGenOutput = x.Element("LastGenOutput")?.Value ?? ".cs";
-
-				return string.Equals(generator, "SettingsSingleFileGenerator")
-					   && lastGenOutput.EndsWith(".cs", StringComparison.OrdinalIgnoreCase);
-			}
-
-			return include.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase);
-
-			bool VerifyDefaultXamlCompileItem(XElement child)
-			{
-				var name = child.Name.LocalName;
-
-				if (child.HasElements)
-				{
-					return false;
-				}
-
-				if (name == "DependentUpon")
-				{
-					return true;
-				}
-
-				return name == "SubType" && string.Equals(child.Value, "Code", StringComparison.OrdinalIgnoreCase);
-			}
+			var itemGroup = new XElement("ItemGroup");
+			XElement embeddedResource = new XElement(itemType);
+			embeddedResource.Add(new XAttribute("Include", $"{path}\\**\\*.*"));
+			embeddedResource.Add(new XElement("CopyToOutputDirectory", "Always"));
+			itemGroup.Add(embeddedResource);
+			definition.ItemGroups.Add(itemGroup);
 		}
 	}
 }

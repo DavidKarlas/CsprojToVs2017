@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28711.60
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33021.287
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project2015To2017.Tests", "Project2015To2017.Tests\Project2015To2017.Tests.csproj", "{1AF63B37-E57F-41F1-B34F-177DBC927D97}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project2015To2017.Migrate2019.Library", "Project2015To2017.Migrate2019.Library\Project2015To2017.Migrate2019.Library.csproj", "{69EB7F70-ACFD-43F7-829E-2FC340A27E41}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project2015To2017.Migrate2019.Tool", "Project2015To2017.Migrate2019.Tool\Project2015To2017.Migrate2019.Tool.csproj", "{9B6CF418-64C3-4630-9838-5605EFAA5822}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator", "Migrator\Migrator.csproj", "{2A97E66C-2AB1-45FD-A2F1-64E8BB9088E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{9B6CF418-64C3-4630-9838-5605EFAA5822}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B6CF418-64C3-4630-9838-5605EFAA5822}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B6CF418-64C3-4630-9838-5605EFAA5822}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A97E66C-2AB1-45FD-A2F1-64E8BB9088E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A97E66C-2AB1-45FD-A2F1-64E8BB9088E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A97E66C-2AB1-45FD-A2F1-64E8BB9088E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A97E66C-2AB1-45FD-A2F1-64E8BB9088E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

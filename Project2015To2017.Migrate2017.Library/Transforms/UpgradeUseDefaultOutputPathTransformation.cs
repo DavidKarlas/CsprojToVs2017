@@ -28,7 +28,10 @@ namespace Project2015To2017.Migrate2017.Transforms
 			bool IsDefaultLegacyOutputPath(string x) =>
 				string.Equals(
 					x.Replace('\\', '/'),
-					@"bin/$(Configuration)/", StringComparison.OrdinalIgnoreCase);
+					@"bin/$(Configuration)/", StringComparison.OrdinalIgnoreCase) ||
+					string.Equals(
+					x.Replace('\\', '/'),
+					@"bin/$(Configuration)", StringComparison.OrdinalIgnoreCase);
 
 			bool HasDefaultLegacyOutputPath(string x) =>
 				x

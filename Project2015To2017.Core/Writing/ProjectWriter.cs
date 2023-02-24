@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -266,9 +267,14 @@ namespace Project2015To2017.Writing
 				foreach (var packageReference in project.PackageReferences)
 				{
 					var reference = new XElement("PackageReference", new XAttribute("Include", packageReference.Id));
-					if (packageReference.Version != null)
+					//if (packageReference.Version != null)
+					//{
+					//	reference.Add(new XAttribute("Version", packageReference.Version));
+					//}
+					if(packageReference.Id== "Microsoft.VisualStudio.QualityTools.UnitTestFramework")
 					{
-						reference.Add(new XAttribute("Version", packageReference.Version));
+						packageReference.DefinitionElement.Remove();
+						continue;
 					}
 
 					if (packageReference.IsDevelopmentDependency)
@@ -283,6 +289,10 @@ namespace Project2015To2017.Writing
 					else
 					{
 						nugetReferences.Add(reference);
+					}
+					if (packageReference.GeneratePathProperty)
+					{
+						reference.Add(new XAttribute("GeneratePathProperty", "true"));
 					}
 				}
 

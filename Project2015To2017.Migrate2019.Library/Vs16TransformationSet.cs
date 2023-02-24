@@ -35,13 +35,15 @@ namespace Project2015To2017.Migrate2019.Library
 				// VS16 migration
 				new Vs16FrameworkReferencesTransformation(),
 				new TestProjectPackageReferenceTransformation(logger),
-				new AssemblyFilterPackageReferencesTransformation(),
-				new AssemblyFilterHintedPackageReferencesTransformation(),
+				//new AssemblyFilterPackageReferencesTransformation(),
+				//new AssemblyFilterHintedPackageReferencesTransformation(),
 				new AssemblyFilterDefaultTransformation(),
 				new ImportsTargetsFilterPackageReferencesTransformation(),
 				new FileTransformation(logger),
 				new XamlPagesTransformation(logger),
 				new BrokenHookTargetsTransformation(logger),
+				new UpgradeDebugTypeTransformation(),
+				new UpgradeUseDefaultOutputPathTransformation()
 			};
 		}
 	}
